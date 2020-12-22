@@ -80,11 +80,11 @@ export default function GoodProjectile() {
   // --------------------------
   // explosion
   // --------------------------
-  const triangleArms = (index: number) => {
+  const triangleArms = (index: number, tick: number) => {
     const degrees = index * (360 / nrOfProjectiles);
     const radians: number = degrees * (Math.PI / 180);
     const tangens: number = Math.tan(radians);
-    const longArm: number = 10; // przeciwprostokątna
+    const longArm: number = 15 - tick; // przeciwprostokątna, ruch jednostajnie spowolniony
     const armX: number = longArm / Math.sqrt(tangens * tangens + 1);
     const armY: number = tangens * armX;
     return [armX, armY];
@@ -103,7 +103,7 @@ export default function GoodProjectile() {
     const moveRockets = (tick: number, previousRockets) => {
       if (tick === 0) previousRockets = initialRockets;
       const newRockets = previousRockets.map((rocket, index) => {
-        const [plusX, plusY] = triangleArms(index);
+        const [plusX, plusY] = triangleArms(index, tick);
         return index >= previousRockets.length / 2
           ? [rocket[0] - plusX, rocket[1] - plusY]
           : [rocket[0] + plusX, rocket[1] + plusY];
